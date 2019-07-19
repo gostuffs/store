@@ -1,0 +1,202 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel='icon' href='./img/Logo.png'  type='image/png' sizes='16x16' />
+
+    <title>Phương thức thanh toán trên GoStuffs</title>
+    
+    <!-- Custom styles for this template -->
+    <!-- <link href="form-validation.css" rel="stylesheet"> -->
+    <style type="text/css">
+        .round-button {
+            border-radius: 20%;
+        }
+        .logo-color {
+            color: #007ACC;
+        }
+        li {
+          margin:0 0 10px 0;   
+        }
+    </style>
+    
+    <!-- ================================================== 
+            Stripe core JavaScript
+    ================================================== -->
+          <!-- Load Stripe.js on your website. -->
+    <script src="https://js.stripe.com/v3"></script>
+
+    <script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var pairs = url.searchParams.getAll("sku");
+    var items = [];
+    // Display the values
+    for(var item of pairs) {
+        let quantity = Number(item.split('sku_')[0]);
+        let sku = 'sku_'+ item.split('sku_')[1];
+        items.push({sku, quantity});
+    }
+    //sku=2sku_FRdXMkLkvbG5v7&sku=3sku_FRzUvWILKidaHF
+    //====== Stripe payment script
+    var stripe = Stripe('pk_test_GKHLnP821tpHIQeOuUOZdBlC00GANcMNVL');
+    
+    //var checkoutButton = document.getElementById('checkout-button-sku_FRdXMkLkvbG5v7');
+    //checkoutButton.addEventListener('click', function () {
+        // When the customer clicks on the button, redirect
+        // them to Checkout.
+        function checkout(){
+        stripe.redirectToCheckout({
+            items,
+        // items: [{sku: 'sku_FRdXMkLkvbG5v7', quantity: 1},
+        // {sku: 'sku_FRzUvWILKidaHF', quantity: 2}
+        // ],
+    
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        // successUrl: window.location.protocol + '/success.html',
+        // cancelUrl: window.location.protocol + '/canceled.html',
+        successUrl: 'http://gostuffs.com/success.html',
+        cancelUrl: 'http://gostuffs.com/canceled.html',
+        customerEmail: 'tuantrankim@gmail.com',
+        billingAddressCollection:'required',
+        submitType: 'auto',
+        
+        })
+        .then(function (result) {
+        if (result.error) {
+            // If `redirectToCheckout` fails due to a browser or network
+            // error, display the localized error message to your customer.
+            var displayError = document.getElementById('error-message');
+            displayError.textContent = result.error.message;
+        }
+        });
+        };
+    //});
+          
+    </script>
+
+    <!-- ================================================== 
+            Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+      <!-- JQuery -->
+  <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <!-- <script type="text/javascript" src="js/mdb.min.js"></script> -->
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <!-- <script src="../../assets/js/vendor/popper.min.js"></script> -->
+    <!-- <script src="../../dist/js/bootstrap.min.js"></script> -->
+    <!-- <script src="../../assets/js/vendor/holder.min.js"></script> -->
+    
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container">
+      <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4 round-button"  src="./img/big_logo_button.png" alt="" width="72" height="72">
+        <h2 class="logo-color">Cách trả tiền trên GoStuffs</h2>
+        <p class="lead">Xin vui lòng đọc kỹ hướng dẫn trước khi trả tiền ở bước tiếp theo</p>
+      </div>
+
+      <div class="row">
+          <div class="col-md-8 order-md-1">
+              <h4 class="mb-3"><span class="text-muted">Cách trả tiền</span></h4>
+
+              <ul>
+                  <li>
+                      <strong class="logo-color">Bước 1: </strong>
+                      <span>Chuẩn bị thẻ thanh toán quốc tế (Visa, Master, AMEX, ...)</span>
+                    </li>
+                <li>
+                  <strong class="logo-color">Bước 2: </strong>
+                  <span>Nhấn vào nút <strong>"Tiến hành trả tiền"</strong></span>
+                </li>
+                <li>
+                    <strong class="logo-color">Bước 3: </strong>
+                    <span>Kiểm tra kỹ lưỡng giỏ hàng bao gồm tên mặt hàng, hình ảnh, số lượng và tổng số tiền"</span>
+                </li>
+                <li>
+                    <strong class="logo-color">Bước 4: </strong>
+                    <span>Điền thông tin thẻ và địa chỉ gửi hàng vào ô Billing address. Xem hình ví dụ kế bên.</span>
+                </li>
+                <li>
+                    <strong class="logo-color">Bước 5: </strong>
+                    <span>Nhấn vào nút <strong>"Pay"</strong></span>
+                </li>
+                <li>
+                    <strong class="logo-color">Bước 6: </strong>
+                    <span>Trang web thể hiện kết quả thành công "Success"</span>
+                </li>
+                <li>
+                    <strong class="logo-color">Bước 7: </strong>
+                    <span>Kiểm tra email cá nhân về hóa đơn</span>
+                </li>
+              </ul>
+              <h4 class="mb-3 text-muted">Cách hủy bỏ đơn hàng</h4>
+              <p class="lead">Trong trường hợp nhầm lẫn khi đặt hàng xin vui lòng nhắn tin facebook hoặc gửi email nói rõ về thông tin đơn hàng
+                (Email, địa chỉ, mặt hàng và tổng số tiền..)
+                 tới <a href="mailto:support@gostuffs.com ">support@gostuffs.com </a>. 
+                
+                Khách hàng sẽ được hoàn tiền nếu đơn hàng chưa vận chuyển.
+              </p>
+
+              
+                
+    
+                
+    
+                <button class="btn btn-primary btn-lg btn-block" id="checkout-button"
+                role="link" type="button">Tiến hành trả tiền</button>
+              
+            </div>
+
+
+
+
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Hình ảnh minh họa</span>
+          </h4>
+          <img class="d-block mx-auto mb-4 round-button"  src="./img/payment-sample.PNG" alt="" >
+          
+        </div>
+       
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017-2018 GoStuffs LLC</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+  </body>
+
+  <script>
+      var checkoutButton = document.getElementById('checkout-button');
+      checkoutButton.addEventListener("click", function(){
+                checkout();
+            });
+      
+    </script>
+</html>
