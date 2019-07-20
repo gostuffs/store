@@ -32,7 +32,8 @@
 
     <script>
     var url_string = window.location.href;
-    var url = new URL(url_string);
+    var uri_dec = decodeURIComponent(url_string);
+    var url = new URL(uri_dec);
     var pairs = url.searchParams.getAll("sku");
     var items = [];
     // Display the values
